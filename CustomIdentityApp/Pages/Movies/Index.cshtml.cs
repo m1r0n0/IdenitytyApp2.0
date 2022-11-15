@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using CustomIdentityApp.Models;
+using Microsoft.AspNetCore.Mvc.TagHelpers;
 
 namespace CustomIdentityApp.Pages.Movies
 {
