@@ -19,12 +19,16 @@ namespace ShortenURL.Controllers
         }
 
         [BindProperty]
-        public Url Urll { get; set; }
+        public Url UrlObj { get; set; }
 
         [HttpGet]
         public IActionResult Index()
         {
             return View();
+            if (_context.Movie != null)
+            {
+                Movie = await _context.Movie.ToListAsync(); //adding this from Index.cshrml.cs to make cycle (1) work 
+            }
         }
 
         [HttpPost]
@@ -36,26 +40,34 @@ namespace ShortenURL.Controllers
             }
             while (!flag)
             {
+                shortened = "https://shrtUrl/";
                 for (int i = 0; i < 4; i++)
                 {
                     key = Rand.Next(1, 4);
                     switch (key)
                     {
                         case 1:
-                            код,выполняемый если выражение имеет значение1
-        break;
+                            shortened += (char)Rand.Next(48, 58);
+                            break;
                         case 2:
-                            код,выполняемый если выражение имеет значение1
-        break;
+                            shortened += (char)Rand.Next(65, 91);
+                            break;
                         case 3:
-                            код, выполняемый если выражение имеет значениеN
-        break;
+                            shortened += (char)Rand.Next(97, 123);
+                            break;
                     }
-                    После ключ
+                }
+
+                foreach (Url item in model)
+                {
+                    if (shortened == item.ShortUrl) //(1)
                 }
             }
-            Urll = new Url { FullUrl = model.FullUrl };
-            _context.Url.Add(Urll);
+
+
+
+            UrlObj = new Url { FullUrl = model.FullUrl };
+            _context.Url.Add(UrlObj);
             await _context.SaveChangesAsync();
 
             return RedirectToAction("Index", "Home");
