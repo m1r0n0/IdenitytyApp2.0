@@ -13,6 +13,10 @@
                 <label asp-for="FullUrl" class="control-label"></label>
                 <input asp-for="FullUrl" class="form-control" />
                 <span asp-validation-for="FullUrl" class="text-danger"></span>
+                <div>
+                    <label asp-for="IsPrivate"></label> <br />
+                    <input asp-for="IsPrivate" />
+                </div>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />

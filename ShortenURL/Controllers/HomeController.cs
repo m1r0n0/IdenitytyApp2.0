@@ -24,14 +24,14 @@ namespace ShortenURL.Controllers
             _context = context;
         }
 
-        [HttpGet]
+/*        [HttpGet]
         public async Task OnGetAsync()
         {
             if (_context.Url != null)
             {
                 Url = await _context.Url.ToListAsync();
             }
-        }
+        }*/
 
 
         [HttpGet]
@@ -41,9 +41,13 @@ namespace ShortenURL.Controllers
         }
 
         [HttpGet]
-        public IActionResult MyLinks()
+        public async Task<IActionResult> MyLinks(MyLinksViewModel model)
         {
-            return View();
+            if (_context.Url != null)
+            {
+                model.Url = await _context.Url.ToListAsync();
+            }
+            return View(model);
         }
 
         [HttpPost]
@@ -92,7 +96,7 @@ namespace ShortenURL.Controllers
                 break;
             }
         }*/
-            UrlObj = new Url { FullUrl = model.FullUrl, ShortUrl = shortened, UserEmail = userEmail};
+            UrlObj = new Url { UserEmail = userEmail, FullUrl = model.FullUrl, ShortUrl = shortened,  IsPrivate = model.IsPrivate };
             _context.Url.Add(UrlObj);
             await _context.SaveChangesAsync();
 
@@ -103,6 +107,8 @@ namespace ShortenURL.Controllers
 
             return RedirectToAction("Index", "Home");
         }
+
+
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

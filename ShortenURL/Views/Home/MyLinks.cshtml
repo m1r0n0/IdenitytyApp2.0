@@ -20,6 +20,8 @@
     <tbody>
         @foreach (var item in Model.Url)
         {
+            @if (User.Identity.Name == item.UserEmail)
+            {
             <tr>
                 <td>
                     @Html.DisplayFor(modelItem => item.FullUrl)
@@ -28,6 +30,7 @@
                     @Html.DisplayFor(modelItem => item.ShortUrl)
                 </td>
             </tr>
+            }
         }
     </tbody>
 </table>
