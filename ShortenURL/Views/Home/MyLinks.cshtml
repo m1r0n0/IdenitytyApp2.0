@@ -14,6 +14,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.Url[0].ShortUrl)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Url[0].IsPrivate)
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -28,6 +31,9 @@
                 </td>   
                 <td>
                     @Html.DisplayFor(modelItem => item.ShortUrl)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IsPrivate)
                 </td>
             </tr>
             }

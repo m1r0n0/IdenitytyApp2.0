@@ -38,7 +38,7 @@ namespace ShortenURL.Controllers
 
             while (true)
             {
-                shortened = "https://shrtUrl/";
+                shortened = "https://shrtUrl.com/";
                 for (int i = 0; i < 4; i++)
                 {
                     key = Rand.Next(1, 4);
@@ -102,11 +102,32 @@ namespace ShortenURL.Controllers
         {
             foreach (var item in _context.Url)
             {
-                if (model.ShortUrl == item.ShortUrl)
+                if (item.IsPrivate)
                 {
-                    model.FullUrl = item.FullUrl;
-                    break;
+                    if (model.ShortUrl == item.ShortUrl)
+                    {
+                        if (item.UserEmail == User.Identity.Name) 
+                        {
+                            model.FullUrl = item.FullUrl;
+                            break;
+                        }
+                        else
+                        {
+                            model.FullUrl = "You don't have acces to this link!";
+                            break;
+                        }                       
+                    }                    
                 }
+                else
+                {
+                    if (model.ShortUrl == item.ShortUrl)
+                    {
+                        model.FullUrl = item.FullUrl;
+                        break;
+                    }
+                        
+                }
+                
             }
             return View(model);
         }

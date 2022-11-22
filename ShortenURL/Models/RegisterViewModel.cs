@@ -9,18 +9,18 @@ namespace ShortenURL.Models
         public string Email { get; set; } = string.Empty;
 
         [Required]
-        [Display(Name = "Год рождения")]
+        [Display(Name = "Year of birth")]
         public int Year { get; set; }
 
         [Required]
         [DataType(DataType.Password)]
-        [Display(Name = "Пароль")]
+        [Display(Name = "Password")]
         public string Password { get; set; } = String.Empty;
 
         [Required]
-        [Compare("Password", ErrorMessage = "Пароли не совпадают")]
+        [Compare("Password", ErrorMessage = "Passwords don't match")]
         [DataType(DataType.Password)]
-        [Display(Name = "Подтвердить пароль")]
+        [Display(Name = "Confirm password")]
         public string PasswordConfirm { get; set; } = String.Empty;
     }
 }

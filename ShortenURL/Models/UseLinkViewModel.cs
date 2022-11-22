@@ -13,6 +13,10 @@ namespace ShortenURL.Models
         [Display(Name = "Your short URL")]
         public string ShortUrl { get; set; } = string.Empty;
 
+        [Required]
+        [Display(Name = "Private link?")]
+        public bool IsPrivate { get; set; }
+
         public IList<Url> Url { get; set; } = default!;
     }
 }
