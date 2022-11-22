@@ -46,9 +46,12 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
                         <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="UseLink"> Use your link!</a>
+                        </li>
+                        <li class="nav-item">
                             @if (User.Identity.IsAuthenticated)
                             {
-                                <a class="nav-link" asp-area="" asp-controller="Home" asp-action="MyLinks">My links</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="MyLinks">My links</a>
                             }
                         </li>
                     </ul>

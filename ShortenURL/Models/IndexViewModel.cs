@@ -7,6 +7,8 @@ namespace ShortenURL.Models
 {
     public class IndexViewModel
     {
+        public IList<Url> Url { get; set; } = default!;
+
         [Required]
         [Display(Name = "Your full URL")]
         public string FullUrl { get; set; } = string.Empty;
@@ -19,6 +21,6 @@ namespace ShortenURL.Models
         [Display(Name = "Private link?")]
         public bool IsPrivate { get; set; }
 
-        public IList<Url> Url { get; set; } = default!;
+
     }
 }

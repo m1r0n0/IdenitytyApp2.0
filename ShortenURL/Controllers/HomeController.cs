@@ -14,8 +14,6 @@ namespace ShortenURL.Controllers
         int key;
         private readonly ShortenURL.Data.ApplicationContext _context;
 
-        public IList<Url> Url { get; set; } = default!;
-
         [BindProperty]
         public Url UrlObj { get; set; }
 
@@ -24,20 +22,63 @@ namespace ShortenURL.Controllers
             _context = context;
         }
 
-/*        [HttpGet]
-        public async Task OnGetAsync()
-        {
-            if (_context.Url != null)
-            {
-                Url = await _context.Url.ToListAsync();
-            }
-        }*/
-
-
         [HttpGet]
         public async Task<IActionResult> Index()
         {
             return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Index(IndexViewModel model)
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                userEmail = User.Identity.Name;
+            }
+
+            while (true)
+            {
+                shortened = "https://shrtUrl/";
+                for (int i = 0; i < 4; i++)
+                {
+                    key = Rand.Next(1, 4);
+                    switch (key)
+                    {
+                        case 1:
+                            shortened += (char)Rand.Next(48, 58);
+                            break;
+                        case 2:
+                            shortened += (char)Rand.Next(65, 91);
+                            break;
+                        case 3:
+                            shortened += (char)Rand.Next(97, 123);
+                            break;
+                    }
+                }
+
+                foreach (var item in _context.Url)
+                {
+                    if (shortened == item.ShortUrl)
+                    {
+                        isThereSimilar = true;
+                        break;
+                    }
+                    else
+                    {
+                        isThereSimilar = false;
+                    }
+                }
+
+                if (!isThereSimilar)
+                {
+                    break;
+                }
+            }
+            UrlObj = new Url { UserEmail = userEmail, FullUrl = model.FullUrl, ShortUrl = shortened, IsPrivate = model.IsPrivate };
+            _context.Url.Add(UrlObj);
+            await _context.SaveChangesAsync();
+            model.ShortUrl = shortened;
+            return View(model);
         }
 
         [HttpGet]
@@ -50,67 +91,25 @@ namespace ShortenURL.Controllers
             return View(model);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Index(IndexViewModel model)
+        [HttpGet]
+        public async Task<IActionResult> UseLink()
         {
-            if (User.Identity.IsAuthenticated)
-            {
-                userEmail = User.Identity.Name;
-            }
-
-            /*while (true)
-            {*/
-            shortened = "https://shrtUrl/";
-            for (int i = 0; i < 4; i++)
-            {
-                key = Rand.Next(1, 4);
-                switch (key)
-                {
-                    case 1:
-                        shortened += (char)Rand.Next(48, 58);
-                        break;
-                    case 2:
-                        shortened += (char)Rand.Next(65, 91);
-                        break;
-                    case 3:
-                        shortened += (char)Rand.Next(97, 123);
-                        break;
-                }
-            }
-
-            /*foreach (var item in Url)
-            {
-                if (shortened == item.ShortUrl)
-                {
-                    isThereSimilar = true;
-                    break;
-                }
-                else
-                {
-                    isThereSimilar = false;
-                }
-            }
-
-            if (!isThereSimilar) 
-            {
-                break;
-            }
-        }*/
-            UrlObj = new Url { UserEmail = userEmail, FullUrl = model.FullUrl, ShortUrl = shortened,  IsPrivate = model.IsPrivate };
-            _context.Url.Add(UrlObj);
-            await _context.SaveChangesAsync();
-            model.ShortUrl = shortened;
-
-            /*if (!ModelState.IsValid)
-            {
-                return View(model);
-            }*/
-
-            return View(model);
-            //return RedirectToAction("Index", "Home");
+            return View();
         }
 
-
+        [HttpPost]
+        public async Task<IActionResult> UseLink(UseLinkViewModel model)
+        {
+            foreach (var item in _context.Url)
+            {
+                if (model.ShortUrl == item.ShortUrl)
+                {
+                    model.FullUrl = item.FullUrl;
+                    break;
+                }
+            }
+            return View(model);
+        }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
