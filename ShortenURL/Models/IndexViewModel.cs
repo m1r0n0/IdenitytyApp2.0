@@ -18,5 +18,7 @@ namespace ShortenURL.Models
         [Required]
         [Display(Name = "Private link?")]
         public bool IsPrivate { get; set; }
+
+        public IList<Url> Url { get; set; } = default!;
     }
 }

@@ -35,7 +35,7 @@ namespace ShortenURL.Controllers
 
 
         [HttpGet]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             return View();
         }
@@ -99,13 +99,15 @@ namespace ShortenURL.Controllers
             UrlObj = new Url { UserEmail = userEmail, FullUrl = model.FullUrl, ShortUrl = shortened,  IsPrivate = model.IsPrivate };
             _context.Url.Add(UrlObj);
             await _context.SaveChangesAsync();
+            model.ShortUrl = shortened;
 
             /*if (!ModelState.IsValid)
             {
                 return View(model);
             }*/
 
-            return RedirectToAction("Index", "Home");
+            return View(model);
+            //return RedirectToAction("Index", "Home");
         }
 
 
